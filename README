@@ -1,0 +1,13 @@
+First Packet sent from client:
+Key used: [67, 5, 31, 70, 50, 59, 98, 169]
+Int[] representation of the key: [1176438083, 2841787186]
+Encrypted: [-60, -98, -5, -11, -36, -25, -123, 44, 41, 17, 46, 104]
+Decrypted: [34, 51, 0, -28, 4, 0, 0, 0, 70, 61, 32, 0]
+
+Masks:
+Very first mask: 3825218338
+
+Keys: [1176438083, 2841787186]
+Packet Decrypted: [34, 51, 0, -28, 4, 0, 0, 0, 70, 61, 32, 0]
+
+Once encrypted, the seed should become Keys: [2719954529, 3521198837]
