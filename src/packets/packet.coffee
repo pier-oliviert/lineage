@@ -17,14 +17,14 @@ class @Packet
     1
 
   ###
-  # Uint8Array that is available for work.
-  # We are using Uint8Array since it's the way the server interprets packet
+  # Int8Array that is available for work.
+  # We are using Int8Array since it's the way the server interprets packet
   # https://developer.mozilla.org/en-US/docs/JavaScript/Typed_arrays?redirectlocale=en-US&redirectslug=JavaScript_typed_arrays
   # Note:
   #   - The opcode is already filled.
   #   - The high & low byte are already filled based on length()
   #   - You have to overwrite this method
-  #   - When your packaging is done. You have to call @packaged(arr) to notify the callback
+  #   - When your packaging is done. You have to call @packaged(buffer) to notify the callback
   ###
   package: (buffer) =>
     buffer
