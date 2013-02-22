@@ -23,12 +23,14 @@ class @Socket
 
   received: (packet) =>
     return unless packet.resultCode > 0
-    receivingPacket = (packet) =>
+    receivingPacket = (buffer) =>
       return unless packet.resultCode > 0
       flags = new Int8Array packet.data.slice(0,2)
-      expectedSize = flags[0] + flags[1] * 256
-      buffer = new Uint8Array(packet.data.slice(2))
-      console.log(@decryptor.process(buffer))
+      buffer = @decryptor.process(new Uint8Array(packet.data.slice(2)))
+      opcode = buffer[0]
+
+      if Lineage.routes[opcode]?
+        console.log new Lineage.routes[buffer[0]] buffer.subarray(1)
     @received = receivingPacket
 
   ###
@@ -47,4 +49,3 @@ class @Socket
     packet.join(data, 2)
 
     @socket.write @socketId, packet.buffer, (e) ->
-      console.log("Sent")
