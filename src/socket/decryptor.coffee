@@ -1,6 +1,7 @@
 class @Decryptor extends Encryption
 
   process: (data) ->
+    console.log(data)
     size = data.length
     keys = @keys @seed
 

@@ -1,4 +1,5 @@
 class @Socket
+
   constructor: (ip, port) ->
     @socket = chrome.socket
     @socketId = -1
@@ -21,8 +22,14 @@ class @Socket
     @socket.read(@socketId, null, @received)
 
   received: (packet) =>
-    return unless packet.data.byteLength
-    @decryptor.process(packet.data)
+    return unless packet.resultCode > 0
+    receivingPacket = (packet) =>
+      return unless packet.resultCode > 0
+      flags = new Int8Array packet.data.slice(0,2)
+      expectedSize = flags[0] + flags[1] * 256
+      buffer = new Uint8Array(packet.data.slice(2))
+      console.log(@decryptor.process(buffer))
+    @received = receivingPacket
 
   ###
   #   Discussion: How the server handles the length of a packet goes as follow:
@@ -38,7 +45,6 @@ class @Socket
     packet[0] = size % 256
     packet[1] = (size / 256) & 0xFF
     packet.join(data, 2)
-    console.log(packet.buffer)
-    @socket.write @socketId, packet.buffer, (e) ->
-      console.log(e)
 
+    @socket.write @socketId, packet.buffer, (e) ->
+      console.log("Sent")
