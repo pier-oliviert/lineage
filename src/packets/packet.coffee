@@ -33,11 +33,14 @@ class @Packet
   ###
   # Don't subclass this method. 
   # Subclass @package instead!
+  #
+  #   Discussion: Since the encryption is being done using the 4 first byte, a packet has to be
+  #   at least 4 bytes wide.
   ###
   bufferize: (callback) ->
     throw "Error: No callbacks given. This packet won't be sent" unless callback?
     @packaged = callback
-    view = new Int8Array(@length())
+    view = new Int8Array(Math.max(@length(), 4))
     view[0] = @op & 0xFF
 
     @package view
