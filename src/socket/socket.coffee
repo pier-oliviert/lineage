@@ -23,7 +23,7 @@ class @Socket
 
   received: (packet) =>
     return unless packet.resultCode > 0
-    receivingPacket = (buffer) =>
+    receivingPacket = (packet) =>
       return unless packet.resultCode > 0
       flags = new Int8Array packet.data.slice(0,2)
       buffer = @decryptor.process(new Uint8Array(packet.data.slice(2)))
@@ -38,12 +38,15 @@ class @Socket
   #   If a packet is smaller than 256bytes, the high byte is used. If however, the message is
   #   bigger than 256bytes, you use the low byte as a multiplicator. 
   #   The length of a packet is assumed to be: lowByte * 256 + highByte
+  #
+  #   Discussion: Since the encryption is being done using the 4 first byte, a packet has to be
+  #   at least 4 bytes wide.
   ###
   send: (data) =>
     data = @encryptor.process(data)
     size = data.length + 2
 
-    packet = new Int8Array(new ArrayBuffer(size))
+    packet = new Int8Array(Math.max(size, 4))
     packet[0] = size % 256
     packet[1] = (size / 256) & 0xFF
     packet.join(data, 2)
