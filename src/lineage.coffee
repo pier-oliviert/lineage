@@ -3,16 +3,19 @@ class Lineage
   constructor: ->
     @socket = new Socket("127.0.0.1", 2000)
     @controllers = []
+    login = new chrome.app.Controllers.Login
+    @push(login)
+
+  push: (controller) ->
+    controller.render()
+    @controllers.push controller
+
+  pop: (controller) ->
+    @controllers.slice(@controllers.indexOf(controller), 0)
+
+  current: ->
+    @controllers[@controllers.length - 1]
 
 
-  log: (user, pwd) =>
-    packet = new LogPacket(113)
-    packet.user = user
-    packet.password = pwd
-    packet.bufferize (buffer) =>
-      @socket.send(buffer)
-
-    packet
-
-    
-@Lineage = new Lineage()
+$ ->
+  window.Lineage = new Lineage()

@@ -24,10 +24,10 @@ class @Packet
   #   - The opcode is already filled.
   #   - The high & low byte are already filled based on length()
   #   - You have to overwrite this method
-  #   - When your packaging is done. You have to call @packaged(buffer) to notify the callback
+  #   - When your packaging is done. You have to call @packaged(buffer) or super to notify the callback
   ###
   package: (buffer) =>
-    buffer
+    @packaged(buffer)
 
 
   ###

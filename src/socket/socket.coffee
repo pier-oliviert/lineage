@@ -6,6 +6,8 @@ class @Socket
     @encryptor = new Encryptor()
     @decryptor = new Decryptor()
 
+    @buffer = new Buffer
+
     @socket.create "tcp", {}, (info) =>
       @socketId = info.socketId
       console.log "Connecting to #{ip}:#{port}"
@@ -23,15 +25,27 @@ class @Socket
 
   received: (packet) =>
     return unless packet.resultCode > 0
+
     receivingPacket = (packet) =>
       return unless packet.resultCode > 0
-      flags = new Int8Array packet.data.slice(0,2)
-      buffer = @decryptor.process(new Uint8Array(packet.data.slice(2)))
-      opcode = buffer[0]
 
-      if Lineage.routes[opcode]?
-        console.log new Lineage.routes[buffer[0]] buffer.subarray(1)
+      if @buffer.empty()
+        @buffer.initialize( new Uint8Array(packet.data) )
+      else
+        @buffer.append( new Uint8Array(packet.data) )
+
+      while @buffer.full()
+        @process @buffer.data()
+        
     @received = receivingPacket
+
+  process: (encryptedData) =>
+    data = @decryptor.process( new Uint8Array(encryptedData) )
+    opcode = data[0]
+
+    if chrome.app.Routes[opcode]?
+      Lineage.current().received( new chrome.app.Routes[opcode](data.subarray(1)) )
+
 
   ###
   #   Discussion: How the server handles the length of a packet goes as follow:

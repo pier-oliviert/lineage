@@ -1,7 +1,9 @@
-class @LogPacket extends Packet
+chrome.app.Packets.Login = class LogPacket extends Packet
 
-  constructor: (op) ->
-    super
+  constructor: (user, password) ->
+    @user = user
+    @password = password
+    super(113)
 
     @buffer = {}
 
