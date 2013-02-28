@@ -7,4 +7,4 @@ chrome.app.Routes[80] = class CharAmountPacket
       data[1]
 
 
-PacketId.CharAmount
+PacketId.CharAmount = 80

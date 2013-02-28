@@ -7,7 +7,6 @@ chrome.app.Controllers.Login = class LoginController
     switch packet.id
       when PacketId.AuthResult
         if packet.success() is true
-          console.log("You are logged in!")
           Lineage.push( new chrome.app.Controllers.Characters )
 
         else

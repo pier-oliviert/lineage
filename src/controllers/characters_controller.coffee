@@ -17,9 +17,36 @@ chrome.app.Controllers.Characters = class CharactersController
   templateURL: ->
     "/templates/characters.html"
 
-  eventify: ($html) ->
 
+  eventify: ($html) ->
+    $html.on "click", ".select", ->
+      character = $(this).parent().data("character")
+      Lineage.push( new chrome.app.Controllers.Game(character) )
 
   received: (packet) ->
+    switch packet.id
+      when PacketId.CharAmount
+        @characters = new Array()
+        @characters.amount = packet.amount()
+      when PacketId.CharInfo
+        @characters.push(new chrome.app.Models.Character(packet))
+
+        if @characters.amount is @characters.length
+          @update()
+
     console.log packet
 
+  update: ->
+    $list = $("#charactersList")
+    $list.empty()
+
+    $ul = $("<ul>")
+
+    for character in @characters
+      $li = $("<li>")
+      $li.append("<h3>#{character.name}</h3>")
+      $li.append("<a href='#' class='select'>#{character.name}</a>")
+      $li.data("character", character)
+      $ul.append($li)
+
+    $list.html($ul)
