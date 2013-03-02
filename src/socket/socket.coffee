@@ -44,8 +44,7 @@ class @Socket
     opcode = data[0]
 
     if chrome.app.Routes[opcode]?
-      packet =  new chrome.app.Routes[opcode](data.subarray(1))
-      packet.opcode = opcode
+      packet =  new chrome.app.Routes[opcode](data.subarray(1), opcode)
       Lineage.current().received( packet )
 
 
