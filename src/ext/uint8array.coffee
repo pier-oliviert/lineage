@@ -12,7 +12,6 @@ Uint8Array::string = (callback) ->
     break if byte is 0x00
     chars[_i] = String.fromCharCode byte
 
-  console.log(chars.join(""))
   callback(chars.join(""))
 
   this.subarray(++chars.length)

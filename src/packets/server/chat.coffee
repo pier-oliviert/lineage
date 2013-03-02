@@ -29,7 +29,6 @@ class ChatPacket
     @_character = arguments[0]
 
   message: =>
-    console.log(arguments)
     return @_message if arguments.length is 0
     @_message = arguments[0]
 
