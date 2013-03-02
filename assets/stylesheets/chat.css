@@ -24,3 +24,15 @@
 #chatBox form input[type=text] {
   width: 100%;
 }
+
+#chatBox .normal {
+  color: #000;
+}
+
+#chatBox .global {
+  color: #296FAA;
+}
+
+#chatBox .whisper {
+  color: #BABABA;
+}

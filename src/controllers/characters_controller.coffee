@@ -45,7 +45,7 @@ chrome.app.Controllers.Characters = class CharactersController
     for character in @characters
       $li = $("<li>")
       $li.append("<h3>#{character.name}</h3>")
-      $li.append("<a href='#' class='select'>#{character.name}</a>")
+      $li.append("<a href='#' class='select'>Select</a>")
       $li.data("character", character)
       $ul.append($li)
 

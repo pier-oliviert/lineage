@@ -33,5 +33,7 @@ chrome.app.Controllers.Game = class GameController
   received: (packet) ->
     switch packet.id
       when PacketId.Chat, PacketId.GlobalChat, PacketId.WhisperChat
-        $(document.body).find("ul.history").append("<li>#{packet.message}</li>")
+        $li =$("<li>#{packet.message()}</li>")
+        $li.addClass packet.type
+        $(document.body).find("ul.history").append($li)
     console.log(packet)

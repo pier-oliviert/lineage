@@ -1,15 +1,10 @@
 chrome.app.Routes[66] = class NewsPacket
   id: 66
-  constructor: (data) ->
+  constructor: (@data) ->
+    @data = @data.string(@message)
 
-    @message = @convertByteToChar(data).join("")
-
-
-  convertByteToChar: (bytes) ->
-    chars = []
-
-    for byte in bytes
-      break if byte is 0x00
-      chars[_i] = String.fromCharCode byte
+  message: =>
+    return @_message if arguments.length is 0
+    @_message = arguments[0]
 
 PacketId.News = 63
