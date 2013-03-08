@@ -1,38 +1,39 @@
-#chatBox {
+#chat {
   width: 300px;
-  height: 400px;
-  position: relative;
-  margin: 50px auto;
-}
-
-#chatBox .history {
-  max-height: 100%;
-  overflow-y: scroll;
-  margin-bottom: 30px;
-}
-
-#chatBox form {
+  height: 232px;
   position: absolute;
   bottom: 0;
-  width: 100%;
+  left: 0;
+  padding: 12px;
 }
 
-#chatBox form input[type=submit] {
+#chat .history {
+  height: 180px;
+  overflow-y: scroll;
+}
+
+#chat form input[type=submit] {
   display: none;
 }
 
-#chatBox form input[type=text] {
+#chat form input[type=text] {
   width: 100%;
 }
 
-#chatBox .normal {
-  color: #000;
+#chat ul.types {
+  padding: 4px 0;
+}
+#chat ul.types li {
+  list-style-type: none;
+  cursor: pointer;
+  float: left;
+  width: 20%;
 }
 
-#chatBox .global {
-  color: #296FAA;
+#chat li:active, #chat li:hover {
+  text-decoration: underline;
 }
 
-#chatBox .whisper {
-  color: #BABABA;
+#chat ul.types li.active {
+  color: blue;
 }

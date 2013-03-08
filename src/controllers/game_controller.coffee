@@ -1,22 +1,23 @@
 chrome.app.Controllers.Game = class GameController
   constructor: (character) ->
-    @character = character
-    packet = new chrome.app.Packets.SelectCharacter(@character)
+    packet = new chrome.app.Packets.SelectCharacter(character)
     packet.bufferize Lineage.socket.send
 
     
+  load: ->
+    @engine = new chrome.app.Engine([{
+      name: "background"
+      url: "/templates/game.html"
+      logic: chrome.app.Engine.Background
+    },{
+      name: "chat"
+      url: "/templates/chat.html"
+      logic: chrome.app.Engine.Chat
+    }])
+
   render: ->
     $(document.body).empty()
-    #Crafty.init(document.width, document.height)
-    $(document.body).append("
-      <div id='chatBox'>
-        <ul class='history'>
-        </ul>
-        <form>
-          <input type='text' placeholder='Send a message' />
-          <input type='submit'>
-        </form>
-        </div>")
+    @load()
 
     @eventify $(document.body)
 
@@ -26,14 +27,18 @@ chrome.app.Controllers.Game = class GameController
       $input = $(this).children("input").first()
       message = $input.val()
       $input.val("")
-      packet = new chrome.app.Packets.Chat(message, true)
+      global = $("#chat ul.types li.active").hasClass("global")
+      packet = new chrome.app.Packets.Chat(message, global)
       packet.bufferize Lineage.socket.send
       false
+
+    $html.on "click", "#chat ul.types li", (e) =>
+      @engine.components.chat.toggle($(e.target))
 
   received: (packet) ->
     switch packet.id
       when PacketId.Chat, PacketId.GlobalChat, PacketId.WhisperChat
-        $li =$("<li>#{packet.message()}</li>")
-        $li.addClass packet.type
-        $(document.body).find("ul.history").append($li)
+        @engine.components.chat.received(packet)
+      when PacketId.CharInfo
+        @update(@character.find(packet))
     console.log(packet)
