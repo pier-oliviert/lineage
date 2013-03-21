@@ -1,16 +1,21 @@
-chrome.app.Engine.Chat = class Chat
-  constructor: (html) ->
-    @$html = $(html)
-    @$types = @$html.find("ul.types")
+chrome.app.Components.Chat = class Chat
+  constructor: ->
+    Lineage.templates.get("templates/chat.html", this)
+
+  html: (html) ->
+    return @html.value if arguments.length is 0
+    @html.value = $(html)
+    @html.value
+
+  loaded: ->
+    $("#game").append @html()
+    @$types = @html().find("ul.types")
     @$types.children(".global").addClass("active")
     @$types.children("li").each ->
       $(this).data "history", []
 
     this.$active = this.$types.children(".active")
-    @loaded = true
 
-  html: ->
-    @$html
 
   received: (packet) ->
     @update(packet.type, @compile(packet))
@@ -26,10 +31,11 @@ chrome.app.Engine.Chat = class Chat
     $el.data("history").push $li
 
     if this.$active.hasClass(type)
-      this.$html.find(".history").append($li)
+      @html().find(".history").append($li)
 
   toggle: ($element) ->
-    this.$html.find(".active").removeClass("active")
+    @html().find(".active").removeClass("active")
     $element.addClass("active")
     this.$active = $element
-    this.$html.find(".history").html $element.data("history")
+    @html().find(".history").html $element.data("history")
+

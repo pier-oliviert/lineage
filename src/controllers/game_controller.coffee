@@ -1,26 +1,42 @@
 chrome.app.Controllers.Game = class GameController
-  constructor: (character) ->
-    packet = new chrome.app.Packets.SelectCharacter(character)
+  constructor: (@player) ->
+    packet = new chrome.app.Packets.SelectCharacter(@player)
     packet.bufferize Lineage.socket.send
+    @stage = new PIXI.Stage(0xFFFFFF)
+    @renderer = PIXI.autoDetectRenderer(1024,768)
+    @components() #initialize
 
-    
-  load: ->
-    @engine = new chrome.app.Engine([{
-      name: "background"
-      url: "/templates/game.html"
-      logic: chrome.app.Engine.Background
-    },{
-      name: "chat"
-      url: "/templates/chat.html"
-      logic: chrome.app.Engine.Chat
-    }])
+    $container = $("<div id='game'>").appendTo $(document.body).empty()
+    $container.append @renderer.view
 
-  render: ->
-    $(document.body).empty()
-    @load()
+    sprite = @player.sprite()
+    sprite.position.x = @renderer.width / 2
+    sprite.position.y = @renderer.height / 2
+
+    sprite.anchor.x = 0.5
+    sprite.anchor.y = 0.5
+
+    @stage.addChild( sprite )
 
     @eventify $(document.body)
 
+    @renderer.render(@stage)
+
+    requestAnimationFrame( @render )
+
+  components: ->
+    if @components.value?
+      return @components.value if arguments.length is 0
+      return @components.value[arguments[0]]
+
+    @components.value = {}
+    @components.value.chat = new chrome.app.Components.Chat
+
+    @components.value
+
+  render: =>
+    @renderer.render(@stage)
+    requestAnimationFrame( @render )
 
   eventify: ($html) ->
     $html.on "submit", "form", (e) ->
@@ -33,12 +49,14 @@ chrome.app.Controllers.Game = class GameController
       false
 
     $html.on "click", "#chat ul.types li", (e) =>
-      @engine.components.chat.toggle($(e.target))
+      @components("chat").toggle($(e.target))
 
   received: (packet) ->
     switch packet.id
       when PacketId.Chat, PacketId.GlobalChat, PacketId.WhisperChat
-        @engine.components.chat.received(packet)
+        @components("chat").received(packet)
       when PacketId.CharInfo
-        @update(@character.find(packet))
+        @update(@player.find(packet))
+      when PacketId.Player
+        console.log packet
     console.log(packet)
