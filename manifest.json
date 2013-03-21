@@ -9,6 +9,11 @@
              "socket": ["tcp-connect:*:2000"]
          }
     ],
+    "requirements": {
+      "3D": {
+        "features": ["webgl"]
+      }
+    },
     "app": {
       "background": {
         "scripts": ["main.js"]
