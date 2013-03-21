@@ -1,15 +1,17 @@
 chrome.app.Routes[102] = class CharInfoPacket
   id: 102
   constructor: (@data) ->
-    @data = @data.string(@name)
-    @data = @data.string(@pledge)
+    @data.parse(this,
+      name: "string",
+      pledge: "string"
+    )
 
-  name: =>
+  name: (name) ->
     return @_name if arguments.length is 0
-    @_name = arguments[0]
+    @_name = name
 
-  pledge: =>
+  pledge: (pledge) ->
     return @_pledge if arguments.length is 0
-    @_pledge = arguments[0]
+    @_pledge = pledge
 
 PacketId.CharInfo = 102

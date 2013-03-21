@@ -4,17 +4,23 @@ class ChatPacket
     switch opcode
       when 3
         @type = "global"
-        @data = @data.int(@tid)
-        @data = @data.string(@message)
+        @data.parse(this,
+          tid: "int",
+          message: "string"
+        )
       when 47
         @type = "whisper"
-        @data = @data.string(@character)
-        @data = @data.string(@message)
+        @data.parse(this,
+          character: "string",
+          message: "string",
+        )
       when 71
         @type = "normal"
-        @data = @data.int(@tid)
-        @data = @data.long(@pid)
-        @data = @data.string(@message)
+        @data.parse(this,
+          tid: "int",
+          pid: "long",
+          message: "string"
+        )
 
   tid: => #Type Id
     return @_tid if arguments.length is 0
