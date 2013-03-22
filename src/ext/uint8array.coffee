@@ -12,7 +12,7 @@ Uint8Array::string = ->
     break if byte is 0x00
     chars[_i] = String.fromCharCode byte
 
-  {value: chars.join(""), size: chars.length++}
+  {value: chars.join(""), size: ++chars.length}
 
 Uint8Array::int = (size) ->
   value = 0

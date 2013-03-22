@@ -1,7 +1,12 @@
 chrome.app.Packets.Chat = class ChatPacket extends Packet
-  constructor: (@message, global = false) ->
-    @type = if global then 3 else 0
-    super if global then 115 else 18
+  types:
+    normal: 0
+    shouting: 2
+    global: 3
+    clan: 4
+  constructor: (@message, type) ->
+    @type = @types[type]
+    super if @type is 3 then 115 else 18
 
   length: ->
     super + @message.length + 2

@@ -51,7 +51,6 @@ chrome.app.Controllers.Game = class GameController
   position: (packet) ->
     unless @characters[packet.characterId()]?
       character = new chrome.app.Models.Character(packet)
-      console.log packet.name()
       delta = {}
       delta.x = character.x - @player.x
       delta.y = character.y - @player.y
@@ -65,13 +64,12 @@ chrome.app.Controllers.Game = class GameController
 
 
   eventify: ($html) ->
-    $html.on "submit", "form", (e) ->
-      $input = $(this).children("input").first()
+    $html.on "submit", "form", (e) =>
+      $input = $(e.target).children("input").first()
       message = $input.val()
       $input.val("")
-      global = $("#chat ul.types li.active").hasClass("global")
-      packet = new chrome.app.Packets.Chat(message, global)
-      packet.bufferize Lineage.socket.send
+      type = $("#chat ul.types li.active").attr("type")
+      @components("chat").send message, type
       false
 
     $html.on "click", "#chat ul.types li", (e) =>

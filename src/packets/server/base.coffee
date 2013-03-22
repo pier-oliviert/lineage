@@ -1,6 +1,6 @@
 class chrome.app.Packets.ReceivedPacket
   attributes: (data, map) ->
-    @setAttribute(fn) for fn of map
+    for fn of map
       @setAttribute(fn)
     @data.parse this, map
 
