@@ -29,7 +29,7 @@ chrome.app.Controllers.Characters = class CharactersController
         @characters = new Array()
         @characters.amount = packet.amount()
       when PacketId.CharInfo
-        @characters.push(new chrome.app.Models.Character(packet))
+        @characters.push(new chrome.app.Models.Player(packet))
 
         if @characters.amount is @characters.length
           @update()

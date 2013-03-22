@@ -4,17 +4,17 @@ chrome.app.Controllers.Game = class GameController
     packet.bufferize Lineage.socket.send
     @stage = new PIXI.Stage(0xFFFFFF)
     @renderer = PIXI.autoDetectRenderer(1024,768)
-    @components() #initialize
+    @components
+      chat: new chrome.app.Components.Chat
+
+    @characters = {}
 
     $container = $("<div id='game'>").appendTo $(document.body).empty()
     $container.append @renderer.view
 
-    sprite = @player.sprite()
+    sprite = @player.sprite
     sprite.position.x = @renderer.width / 2
     sprite.position.y = @renderer.height / 2
-
-    sprite.anchor.x = 0.5
-    sprite.anchor.y = 0.5
 
     @stage.addChild( sprite )
 
@@ -30,13 +30,39 @@ chrome.app.Controllers.Game = class GameController
       return @components.value[arguments[0]]
 
     @components.value = {}
-    @components.value.chat = new chrome.app.Components.Chat
+    for name, component of arguments[0]
+      @components.value[name] = component
 
     @components.value
 
   render: =>
     @renderer.render(@stage)
     requestAnimationFrame( @render )
+
+  move: (packet) ->
+    character = @characters[packet.characterId()]
+    sprite = character.sprite
+    delta = {}
+    delta.x = packet.x() - @player.x
+    delta.y = packet.y() - @player.y
+    sprite.position.x = @renderer.width / 2 + delta.x * 32
+    sprite.position.y = @renderer.height / 2 + delta.y * 32 * -1
+
+  position: (packet) ->
+    unless @characters[packet.characterId()]?
+      character = new chrome.app.Models.Character(packet)
+      console.log packet.name()
+      delta = {}
+      delta.x = character.x - @player.x
+      delta.y = character.y - @player.y
+
+      sprite = character.sprite
+      sprite.position.x = @renderer.width / 2 + delta.x * 32
+      sprite.position.y = @renderer.height / 2 + delta.y * 32 * -1
+
+      @stage.addChild sprite
+      @characters[packet.characterId()] = character
+
 
   eventify: ($html) ->
     $html.on "submit", "form", (e) ->
@@ -58,5 +84,9 @@ chrome.app.Controllers.Game = class GameController
       when PacketId.CharInfo
         @update(@player.find(packet))
       when PacketId.Player
-        console.log packet
-    console.log(packet)
+        if @player.name == packet.name()
+          @player.update( packet )
+        else
+          @position(packet)
+      when PacketId.Move
+        @move(packet)
