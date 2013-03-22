@@ -1,30 +1,18 @@
-class PlayerPacket
+class PlayerPacket extends chrome.app.Packets.ReceivedPacket
   id: 1
   constructor: (@data) ->
-    @data.parse this,
-      x: "long",
-      y: "long"
-
-
-  x: (pos) ->
-    @x = (pos) ->
-      return @x.value if arguments.length is 0
-      @x.value = pos
-      @x.value
-    @x(pos)
-
-  y: (pos) ->
-    @y = (pos) ->
-      return @y.value if arguments.length is 0
-      @y.value = pos
-      @y.value
-    @y(pos)
-
-  name: (name) ->
-    console.log name
-
-  pledge: (name) ->
-    console.log name
+    @attributes @data,
+      x: "int8",
+      y: "int8",
+      id: "int32",
+      spriteId: "int16",
+      status: "int8",
+      heading: "int8",
+      light: "int8",
+      experience: "int32",
+      lawful: "int16",
+      name: "string",
+      title: "string"
 
 
 chrome.app.Routes[1] = PlayerPacket

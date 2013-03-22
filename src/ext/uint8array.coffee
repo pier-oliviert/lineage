@@ -14,15 +14,24 @@ Uint8Array::string = ->
 
   {value: chars.join(""), size: chars.length++}
 
-Uint8Array::int = ->
-  {value: this[0], size: 1}
-
-Uint8Array::long = ->
+Uint8Array::int = (size) ->
   value = 0
-  for byte in this.subarray(0,2)
+  for byte in this.subarray(0,size)
     value |= byte << 8 * _i
 
-  {value: value, size: 2}
+  {value: value, size: size}
+
+Uint8Array::int8 = ->
+  @int(1)
+
+Uint8Array::int16 = ->
+  @int(2)
+
+Uint8Array::int32 = ->
+  @int(4)
+
+Uint8Array::int64 = ->
+  @int(8)
 
 Uint8Array::parse = (packet, map) ->
   data = new Uint8Array this
