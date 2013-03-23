@@ -13,8 +13,10 @@ class PlayerPacket extends chrome.app.Packets.ReceivedPacket
       experience: "int32",
       lawful: "int16",
       name: "string",
-      title: "string"
+      title: "string",
+      state: "int8"
 
+      
 
 chrome.app.Routes[1] = PlayerPacket
 PacketId.Player = 1
