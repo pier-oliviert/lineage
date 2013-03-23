@@ -1,10 +1,11 @@
 #chat {
-  width: 300px;
+  width: 320px;
   height: 232px;
   position: absolute;
   bottom: 0;
   left: 0;
   padding: 12px;
+  font-size: 1.3rem;
 }
 
 #chat .history {

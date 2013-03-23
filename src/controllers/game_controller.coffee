@@ -2,7 +2,7 @@ chrome.app.Controllers.Game = class GameController
   constructor: (@player) ->
     packet = new chrome.app.Packets.SelectCharacter(@player)
     packet.bufferize Lineage.socket.send
-    @stage = new PIXI.Stage(0xFFFFFF)
+    @stage = new PIXI.Stage(0xFFFFFF, true)
     @renderer = PIXI.autoDetectRenderer(1024,768)
     @components
       chat: new chrome.app.Components.Chat
@@ -60,7 +60,13 @@ chrome.app.Controllers.Game = class GameController
       sprite.position.y = @renderer.height / 2 + delta.y * 32 * -1
 
       @stage.addChild sprite
+    
       @characters[packet.characterId()] = character
+
+  remove: (packet) ->
+    character = @characters[packet.characterId()]
+    @stage.removeChild character.sprite
+    delete @characters[packet.characterId()]
 
 
   eventify: ($html) ->
@@ -88,3 +94,5 @@ chrome.app.Controllers.Game = class GameController
           @position(packet)
       when PacketId.Move
         @move(packet)
+      when PacketId.Remove
+        @remove(packet)

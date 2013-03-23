@@ -25,7 +25,6 @@ chrome.app.Components.Chat = class Chat
     @update(packet.type(), @compile(packet))
 
   compile: (packet) ->
-    console.log packet
     if packet.type() is "whisper"
       $("<li>#{packet.character()}: #{packet.message()}</li>")
     else

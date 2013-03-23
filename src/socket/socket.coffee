@@ -46,6 +46,8 @@ class @Socket
     if chrome.app.Routes[opcode]?
       packet =  new chrome.app.Routes[opcode](data.subarray(1), opcode)
       Lineage.current().received( packet )
+    else
+      console.log "Opcode ignored: #{opcode}"
 
 
   ###
