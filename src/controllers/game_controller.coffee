@@ -6,6 +6,7 @@ chrome.app.Controllers.Game = class GameController
     renderer = PIXI.autoDetectRenderer(1024,768)
     @components
       chat: new chrome.app.Components.Chat
+      tiles: new chrome.app.Components.Tiles(@stage, width: renderer.width, height: renderer.height, tileSize:32)
       characters: new chrome.app.Components.Characters(@stage, @player)
       camera: new chrome.app.Components.Camera(renderer)
 

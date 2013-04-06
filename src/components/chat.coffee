@@ -32,10 +32,10 @@ chrome.app.Components.Chat = class Chat
 
   update: (type, $li) ->
     $el = @html().find(".#{type}")
-    @history[type].push $li
+    @history[type].splice 0, 0, $li
 
     if this.$active.hasClass(type)
-      @html().find(".history").append($li)
+      @html().find(".history").prepend($li)
     else if !$el.hasClass("unseen")
       $el.addClass("unseen")
 
