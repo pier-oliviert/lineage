@@ -4,6 +4,7 @@ class ChatPacket extends chrome.app.Packets.ReceivedPacket
     2: "shouting"
     3: "global"
     4: "clan"
+    12: "trade"
     16: "whisper"
   
   constructor: (@data, opcode) ->
@@ -25,7 +26,6 @@ class ChatPacket extends chrome.app.Packets.ReceivedPacket
           message: "string"
 
   type: ->
-    console.log @tid() unless @types[@tid()]?
     @types[@tid()]
 
 

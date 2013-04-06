@@ -36,10 +36,12 @@ chrome.app.Components.Chat = class Chat
 
     if this.$active.hasClass(type)
       @html().find(".history").append($li)
+    else if !$el.hasClass("unseen")
+      $el.addClass("unseen")
 
   toggle: ($element) ->
     @html().find(".active").removeClass("active")
-    $element.addClass("active")
+    $element.addClass("active").removeClass("unseen")
     this.$active = $element
     @html().find(".history").html @history[$element.attr("type")]
 

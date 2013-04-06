@@ -38,3 +38,7 @@
 #chat ul.types li.active {
   color: blue;
 }
+
+#chat ul.types li.unseen {
+  color: #A41313;
+}
