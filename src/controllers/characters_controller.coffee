@@ -1,7 +1,7 @@
 chrome.app.Controllers.Characters = class CharactersController
   constructor: ->
     packet = new chrome.app.Packets.Click()
-    packet.bufferize Lineage.socket.send
+    packet.onReady Lineage.socket.send
 
   render: ->
     unless @$template?

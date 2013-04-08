@@ -1,7 +1,7 @@
 chrome.app.Controllers.Login = class LoginController
   login: (user, password) ->
     packet = new chrome.app.Packets.Login(user, password)
-    packet.bufferize Lineage.socket.send
+    packet.onReady Lineage.socket.send
 
   received: (packet) ->
     switch packet.id

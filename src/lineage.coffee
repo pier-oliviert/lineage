@@ -1,7 +1,7 @@
 # Live: 98.248.13.98
 class Lineage
   constructor: ->
-    @socket = new Socket("98.248.13.98", 2000)
+    @socket = new Socket("10.0.1.9", 2000)
     @controllers = []
     @templates = new Templates()
     login = new chrome.app.Controllers.Login

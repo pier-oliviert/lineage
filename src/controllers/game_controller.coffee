@@ -1,7 +1,7 @@
 chrome.app.Controllers.Game = class GameController
   constructor: (@player) ->
     packet = new chrome.app.Packets.SelectCharacter(@player)
-    packet.bufferize Lineage.socket.send
+    packet.onReady Lineage.socket.send
     @stage = new PIXI.Stage(0xFFFFFF, true)
     renderer = PIXI.autoDetectRenderer(1024,768)
     @components

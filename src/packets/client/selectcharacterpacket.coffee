@@ -1,12 +1,14 @@
 chrome.app.Packets.SelectCharacter = class SelectCharacterPacket extends Packet
-  constructor: (character) ->
-    @character = character
-    super(89)
+  constructor: (@character) ->
+    super(89, ["name"])
+    @name @character.name
+
+  name: ->
+    return if arguments.length is 0
+    @process arguments[0], "name"
 
   length: ->
-    super + @character.name.length + 1
+    super + @name().length
 
-  package: (view) =>
-    @character.name.bufferize (name) =>
-      view.join name, 1
-      @packaged(view)
+  packaged: (buffer) ->
+    buffer.join @name(), 1

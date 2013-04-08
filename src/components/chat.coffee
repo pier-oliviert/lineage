@@ -47,5 +47,5 @@ chrome.app.Components.Chat = class Chat
 
   send: (message, type) ->
     packet = new chrome.app.Packets.Chat(message, type)
-    packet.bufferize Lineage.socket.send
+    packet.onReady Lineage.socket.send
 
