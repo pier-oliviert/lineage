@@ -9,13 +9,13 @@ class @Packet
   ready: ->
     @packaged( @buffer() )
     for callback in @onReady()
-      callback( @buffer() )
+      callback @buffer()
 
   onReady: ->
     @onReady = ->
       return @onReady.value if arguments.length is 0
       if @states().length is 0
-        arguments[0]( @buffer() )
+        arguments[0](@buffer())
       else
         @onReady.value.push arguments[0]
 
@@ -52,7 +52,7 @@ class @Packet
   packed: (type, data) ->
     @[type] = ->
       data
-    @states().splice( @states().indexOf(type), 1)
+    @states().splice @states().indexOf(type), 1
 
     @ready() if @states().length is 0
 
