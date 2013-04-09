@@ -10,5 +10,5 @@ chrome.app.Packets.SelectCharacter = class SelectCharacterPacket extends Packet
   length: ->
     super + @name().length
 
-  packaged: (buffer) ->
+  package: (buffer) ->
     buffer.join @name(), 1

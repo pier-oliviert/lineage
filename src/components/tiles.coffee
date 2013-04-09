@@ -15,11 +15,8 @@ chrome.app.Components.Tiles = class Tiles
 
   placeTile: (stage, offset, tileSize, canvasSize) ->
     tile = new PIXI.Sprite(@textures.normal)
-    tile.setInteractive(true)
     tile.width = tile.height = tileSize
     tile.position = new PIXI.Point(offset.x, offset.y)
-    tile.mouseover = @focus
-    tile.mouseout = @blur
     stage.addChild tile
     @tiles().push tile
     offset.x += tile.width

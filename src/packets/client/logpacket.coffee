@@ -16,6 +16,6 @@ chrome.app.Packets.Login = class LogPacket extends Packet
   length: ->
     super + @user().length + @password().length
 
-  packaged: (buffer) ->
+  package: (buffer) ->
     buffer.join @user(), 1
     buffer.join @password(), @user().length + 1

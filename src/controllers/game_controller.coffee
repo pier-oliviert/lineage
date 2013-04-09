@@ -59,7 +59,7 @@ chrome.app.Controllers.Game = class GameController
       message = $input.val()
       $input.val("")
       type = $("#chat ul.types li.active").attr("type")
-      @components("chat").send message, type
+      @components("chat").send type, body: message
       false
 
     $html.on "click", "#chat ul.types li", (e) =>

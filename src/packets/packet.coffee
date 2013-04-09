@@ -1,5 +1,4 @@
 class @Packet
-  packaged: undefined
 
   constructor: (op, types = []) ->
     @op = op
@@ -7,7 +6,7 @@ class @Packet
     @ready() if @states().length is 0
 
   ready: ->
-    @packaged( @buffer() )
+    @package( @buffer() )
     for callback in @onReady()
       callback @buffer()
 
@@ -66,7 +65,7 @@ class @Packet
   #   - The high & low byte are already filled based on length()
   #   - You should overwrite this method, unless you don't need to add anything
   ###
-  packaged: (buffer) ->
+  package: (buffer) ->
 
   ### You should use this method when you want to 
   # send a string in the packet. This will call @packed()

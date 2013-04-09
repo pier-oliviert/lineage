@@ -45,7 +45,12 @@ chrome.app.Components.Chat = class Chat
     this.$active = $element
     @html().find(".history").html @history[$element.attr("type")]
 
-  send: (message, type) ->
-    packet = new chrome.app.Packets.Chat(message, type)
+  send: (type, content = {}) ->
+    packet = chrome.app.Packets.Chat(type.capitalize())
+    packet.message(content.body)
+    if type isnt "whisper"
+      packet.type(type)
+    else
+      packet.target(content.target)
     packet.onReady Lineage.socket.send
 
