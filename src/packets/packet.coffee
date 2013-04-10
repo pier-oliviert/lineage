@@ -51,6 +51,7 @@ class @Packet
   packed: (type, data) ->
     @[type] = ->
       data
+
     @states().splice @states().indexOf(type), 1
 
     @ready() if @states().length is 0
@@ -69,7 +70,7 @@ class @Packet
 
   ### You should use this method when you want to 
   # send a string in the packet. This will call @packed()
-  # when done.
+  # when done. String always ends with 0x00 this is why the extra byte
   ###
   process: (string, type) ->
     b = new Blob([string])

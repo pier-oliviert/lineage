@@ -1,4 +1,4 @@
-chrome.app.Packets.Chat.Normal = class ChatPacket extends Packet
+chrome.app.Packets.Chat.Normal = chrome.app.Packets.Chat.Clan = class ChatPacket extends Packet
   types:
     normal: 0
     shouting: 2
@@ -14,7 +14,7 @@ chrome.app.Packets.Chat.Normal = class ChatPacket extends Packet
   type: ->
     return if arguments.length is 0
     type = @types[arguments[0]]
-    @packed "type", type && 0xFF
+    @packed "type", type & 0xFF
 
   length: ->
     super + @message().length + 1 #1 is type() length

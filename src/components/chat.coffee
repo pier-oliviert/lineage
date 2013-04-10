@@ -1,4 +1,6 @@
 chrome.app.Components.Chat = class Chat
+  whisperRegex: /^"{1}(\w+)\s(.*)$/
+
   constructor: ->
     Lineage.templates.get("templates/chat.html", this)
     @history = {
@@ -45,12 +47,14 @@ chrome.app.Components.Chat = class Chat
     this.$active = $element
     @html().find(".history").html @history[$element.attr("type")]
 
-  send: (type, content = {}) ->
+  send: (type, message) ->
     packet = chrome.app.Packets.Chat(type.capitalize())
-    packet.message(content.body)
     if type isnt "whisper"
       packet.type(type)
+      packet.message(message)
     else
-      packet.target(content.target)
+      content = @whisperRegex.exec(message)
+      packet.message content.pop()
+      packet.target content.pop()
     packet.onReady Lineage.socket.send
 

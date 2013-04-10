@@ -14,7 +14,6 @@ chrome.app.Packets.Chat.Whisper = class ChatPacket extends Packet
   length: ->
     super + @message().length + @target().length
 
-  package: (buffer) =>
+  package: (buffer) ->
     buffer.join @target(), 1
     buffer.join @message(), @target().length + 1
-
