@@ -4,6 +4,7 @@ class ChatPacket extends chrome.app.Packets.ReceivedPacket
     2: "shouting"
     3: "global"
     4: "clan"
+    9: "whisper"
     12: "trade"
     16: "whisper"
   
@@ -11,6 +12,10 @@ class ChatPacket extends chrome.app.Packets.ReceivedPacket
     #check what kind of chat we have here
     switch opcode
       when 3
+        @attributes @data,
+          tid: "int8",
+          message: "string"
+      when 9
         @attributes @data,
           tid: "int8",
           message: "string"

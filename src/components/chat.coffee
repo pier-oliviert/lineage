@@ -28,7 +28,10 @@ chrome.app.Components.Chat = class Chat
 
   compile: (packet) ->
     if packet.type() is "whisper"
-      $("<li>#{packet.character()}: #{packet.message()}</li>")
+      if packet.tid? && packet.tid() is 9
+        $("<li>#{packet.message()}</li>")
+      else
+        $("<li>#{packet.character()}: #{packet.message()}</li>")
     else
       $("<li>#{packet.message()}</li>")
 

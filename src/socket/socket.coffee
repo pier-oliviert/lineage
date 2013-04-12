@@ -69,4 +69,5 @@ class @Socket
     packet[1] = (size / 256) & 0xFF
     packet.join(data, 2)
 
+    # Must have a function callback. Signature is strick
     @socket.write @socketId, packet.buffer, (e) ->
